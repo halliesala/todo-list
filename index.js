@@ -2,11 +2,13 @@
 const newTaskForm = document.querySelector("#new-task-form");
 const taskTable = document.querySelector('#task-table');
 
-// Get list of tasks from db & render in table
+
+// MAIN
+
+// Get list of tasks from db
 fetch('http://localhost:3000/tasks')
 .then(resp => resp.json())
 .then(taskObjArr => {
-    console.log(taskObjArr);
 
     // Render tasks in table
     taskObjArr.forEach(taskObj => addTaskObjToTable(taskObj));
@@ -73,47 +75,6 @@ function addTaskToTable(id, dueDate, task, priority, isDone, notes) {
     taskSpan.textContent = task;
     taskTD.appendChild(taskSpan);
     addEditButton(id, taskSpan, taskTD);
-
-    // const editButton = document.createElement('button');
-    // editButton.textContent = ' ✏️ '
-    // taskTD.append(taskSpan, editButton);
-    // // Make task editable -- click 'edit' button to open edit form
-    // // Finally, render updates on screen
-    // editButton.addEventListener('click', () => {
-    //     const editForm = document.createElement('form');
-    //     const input = document.createElement('input');
-    //     input.setAttribute('id', 'task');
-    //     input.type = 'text';
-    //     input.value = taskSpan.textContent;
-    //     editForm.appendChild(input);
-    //     // Hide task content
-    //     taskSpan.remove();
-    //     taskTD.prepend(editForm);
-
-    //     editForm.addEventListener('submit', (e) => {
-    //         e.preventDefault();
-    //         const PATCH_OPTIONS = {
-    //             method: 'PATCH',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 'Accept': 'application/json',
-    //             },
-    //             body: JSON.stringify({
-    //                 "task": e.target.task.value,
-    //             })
-    //         }
-    //         fetch(`http://localhost:3000/tasks/${id}`, PATCH_OPTIONS)
-    //         .then(resp => resp.json())
-    //         .then(patchedTaskObj => {
-    //             const editedTaskSpan = document.createElement('span');
-    //             editedTaskSpan.textContent = patchedTaskObj.task;
-    //             editForm.remove();
-    //             taskTD.prepend(editedTaskSpan);
-    //         });
-
-    //     })
-    // })
-
 
     const priorityTD = document.createElement('td');
     priorityTD.textContent = priority;
