@@ -65,8 +65,7 @@ fetch('http://localhost:3000/tasks')
             // Clear table
             taskTable.replaceChildren(tableHeaders);
             // Sort taskObjArr by date added
-            console.log("Sorting ...");
-            taskObjArr.sort(dateCompare("due-date"));
+            taskObjArr.sort(numCompare("due-date"));
             // Append rows to table in that order
             taskObjArr.forEach(taskObj => {
                 addTaskObjToTable(taskObj)
@@ -82,7 +81,7 @@ fetch('http://localhost:3000/tasks')
             // Clear table
             taskTable.replaceChildren(tableHeaders);
             // Sort taskObjArr by date added
-            taskObjArr.sort(dateCompare("date-added"));
+            taskObjArr.sort(numCompare("date-added"));
             // Append rows to table in that order
             taskObjArr.forEach(taskObj => {
                 addTaskObjToTable(taskObj);
@@ -130,13 +129,15 @@ fetch('http://localhost:3000/tasks')
  * 
  * */ 
 
-// If a < b, return negative
+// Toggle between ascending & descending sorts
 const toggle = {
                 'due-date' : false, 
                 'date-added' : false,
                 'priority' : false,
                };
-function dateCompare(key) {
+
+// Returns ascending or descending compareTo function for numerical comparisons
+function numCompare(key) {
     function dueDateCompAsc(a, b) {
         const aMS = a[key];
         const bMS = b[key];
@@ -150,8 +151,7 @@ function dateCompare(key) {
     return !toggle[key] ? dueDateCompAsc : dueDateCompDesc;
 }
 
-// a & b are task objects
-// return positive if a is higher priority than b, 0 if same, negative otherwise
+// Returns ascending or descending compareTo function for priority comparison
 function priorityCompare() {
     const priorityMap = {'High' : 3, 'Medium' : 2, 'Low' : 1};
     function priorityCompareAsc(a, b) {
@@ -205,7 +205,6 @@ function addTaskToTable(id, dueDate, task, priority, isDone, notes, dateAdded) {
     });
     // When priority changed, patch to db
     newPriorityDropdown.addEventListener('change', (e) => {
-        console.log(e.target.value);
         const PATCH_OPTIONS = {
             method: 'PATCH',
                 headers: {
