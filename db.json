@@ -1,0 +1,60 @@
+{
+  "tasks": [
+    {
+      "due-date": "Friday",
+      "task": "Cross out finished items",
+      "priority": "",
+      "is-done": true,
+      "notes": "We finished this!",
+      "id": 2
+    },
+    {
+      "due-date": "Monday",
+      "task": "Sort by priority EDIT -- so priority must be a dropdown",
+      "priority": "Medium",
+      "is-done": false,
+      "notes": "",
+      "id": 3
+    },
+    {
+      "due-date": "Monday ",
+      "task": "Sort by due date -- so Due Date must be a Date",
+      "priority": "",
+      "is-done": false,
+      "notes": "",
+      "id": 4
+    },
+    {
+      "due-date": "",
+      "task": "[STRETCH GOAL] add 'archive' section",
+      "priority": "",
+      "is-done": false,
+      "notes": "",
+      "id": 5
+    },
+    {
+      "due-date": "",
+      "task": "Add 'archive completed tasks' button",
+      "priority": "",
+      "is-done": false,
+      "notes": "",
+      "id": 6
+    },
+    {
+      "due-date": "",
+      "task": "Due should accept a Date; priority should accept a number / string from drop down; 'Done' should be a checkbox (and clicking it should cross out the whole item)",
+      "priority": "",
+      "is-done": false,
+      "notes": "",
+      "id": 7
+    },
+    {
+      "due-date": "",
+      "task": "When we edit a task, the pencil button should change to a checkmark",
+      "priority": "",
+      "is-done": "",
+      "notes": "",
+      "id": 8
+    }
+  ]
+}
