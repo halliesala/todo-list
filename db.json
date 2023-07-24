@@ -1,31 +1,23 @@
 {
   "tasks": [
     {
-      "due-date": "",
-      "task": "Tomorrow!",
+      "due-date": "Friday",
+      "task": "Cross out finished items",
       "priority": "",
       "is-done": true,
-      "notes": "",
-      "id": 1
-    },
-    {
-      "due-date": "",
-      "task": "Cross out complete tasks EDIT -- test test test",
-      "priority": "",
-      "is-done": true,
-      "notes": "",
+      "notes": "We finished this!",
       "id": 2
     },
     {
-      "due-date": "",
-      "task": "Sort by priority -- so priority must be a dropdown",
-      "priority": "",
+      "due-date": "Monday",
+      "task": "Sort by priority EDIT -- so priority must be a dropdown",
+      "priority": "Medium",
       "is-done": false,
       "notes": "",
       "id": 3
     },
     {
-      "due-date": "",
+      "due-date": "Monday ",
       "task": "Sort by due date -- so Due Date must be a Date",
       "priority": "",
       "is-done": false,
