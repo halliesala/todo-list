@@ -2,6 +2,9 @@
 const newTaskForm = document.querySelector("#new-task-form");
 const taskTable = document.querySelector('#task-table');
 const priorityDropdown = document.querySelector("#priority");
+const dueSortButton = document.querySelector('#due-sort');
+const addedSortButton = document.querySelector('#added-sort');
+const prioritySortButton = document.querySelector('#priority-sort');
 
 
 // MAIN
@@ -19,7 +22,7 @@ fetch('http://localhost:3000/tasks')
     // When form is submitted, post task to db and render in table
     newTaskForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const dueDate = e.target['due-date'].value;
+        const dueDate = (new Date(e.target['due-date'].value)).getTime();
         const task = e.target['task'].value;
         const priority = e.target['priority'].value;
         const notes = e.target['notes'].value;
@@ -37,7 +40,7 @@ fetch('http://localhost:3000/tasks')
                 'priority': priority,
                 'is-done': false,
                 'notes': notes,
-                'date-added': getFormattedDate(),
+                'date-added': getDateInMS(),
             })
         }
 
@@ -51,11 +54,119 @@ fetch('http://localhost:3000/tasks')
             newTaskForm['due-date'].value = getFormattedDate();
         })
     })
+
+    // Sort by date added
+    dueSortButton.addEventListener('click', (e) => {
+        fetch('http://localhost:3000/tasks')
+        .then(resp => resp.json())
+        .then(taskObjArr => {
+            // Save headers
+            const tableHeaders = taskTable.firstElementChild;
+            // Clear table
+            taskTable.replaceChildren(tableHeaders);
+            // Sort taskObjArr by date added
+            console.log("Sorting ...");
+            taskObjArr.sort(dateCompare("due-date"));
+            // Append rows to table in that order
+            taskObjArr.forEach(taskObj => {
+                addTaskObjToTable(taskObj)
+            });
+        })
+    });
+    addedSortButton.addEventListener('click', (e) => {
+        fetch('http://localhost:3000/tasks')
+        .then(resp => resp.json())
+        .then(taskObjArr => {
+            // Save headers
+            const tableHeaders = taskTable.firstElementChild;
+            // Clear table
+            taskTable.replaceChildren(tableHeaders);
+            // Sort taskObjArr by date added
+            taskObjArr.sort(dateCompare("date-added"));
+            // Append rows to table in that order
+            taskObjArr.forEach(taskObj => {
+                addTaskObjToTable(taskObj);
+            });
+        })
+    })
+
+    prioritySortButton.addEventListener('click', () => {
+        fetch('http://localhost:3000/tasks')
+        .then(resp => resp.json())
+        .then(taskObjArr => {
+            // Save headers
+            const tableHeaders = taskTable.firstElementChild;
+            // Clear table
+            taskTable.replaceChildren(tableHeaders);
+            // Sort taskObjArr by date added
+            taskObjArr.sort(priorityCompare());
+            // Append rows to table in that order
+            taskObjArr.forEach(taskObj => {
+                addTaskObjToTable(taskObj);
+            });
+        })
+    })
 })
 
 
 
+
 // FUNCTIONS
+
+/**
+ *  NOTE: We tried writing this a couple of ways, and are confused
+ *  that this one works while others didn't. 
+ * 
+ * For example, the following does not work when passed as callback 
+ * in taskObjArr.sort(dueDateCompare):
+ * 
+ * let toggle = false;
+ * function dueDateCompare(a, b) {
+        const aMS = a["due-date"];
+        const bMS = b["due-date"];
+        toggle = !toggle;
+        return !toggle ? aMS - bMS : bMS - aMS; 
+    }
+ * 
+ * */ 
+
+// If a < b, return negative
+const toggle = {
+                'due-date' : false, 
+                'date-added' : false,
+                'priority' : false,
+               };
+function dateCompare(key) {
+    function dueDateCompAsc(a, b) {
+        const aMS = a[key];
+        const bMS = b[key];
+        return aMS - bMS;
+    }
+    
+    function dueDateCompDesc(a, b) {
+        return dueDateCompAsc(b, a)
+    }
+    toggle[key] = !toggle[key];
+    return !toggle[key] ? dueDateCompAsc : dueDateCompDesc;
+}
+
+// a & b are task objects
+// return positive if a is higher priority than b, 0 if same, negative otherwise
+function priorityCompare() {
+    const priorityMap = {'High' : 3, 'Medium' : 2, 'Low' : 1};
+    function priorityCompareAsc(a, b) {
+        const aPri = priorityMap[a.priority];
+        const bPri = priorityMap[b.priority];
+        return aPri - bPri;
+    }
+    function priorityCompareDesc(a, b) {
+        return priorityCompareAsc(b, a);
+    }
+    toggle[priority] = !toggle[priority];
+    return !toggle[priority] ? priorityCompareAsc : priorityCompareDesc;
+}
+
+
 
 // Returns a string 'YYYY-MM-DD'
 function getFormattedDate() {
@@ -64,6 +175,10 @@ function getFormattedDate() {
     const month = (now.getMonth() + 1).toString().padStart(2, '0');
     const date = (now.getDate()).toString().padStart(2, '0');
     return `${year}-${month}-${date}`;
+}
+
+function getDateInMS() {
+    return (new Date()).getTime();
 }
 
 // Builds and appends table row
@@ -80,6 +195,7 @@ function addTaskToTable(id, dueDate, task, priority, isDone, notes, dateAdded) {
     const newPriorityDropdown = priorityDropdown.cloneNode();
     priorityDropdown.childNodes.forEach(child => {
         const newChild = child.cloneNode();
+        //newChild.setAttribute('id', `priority${id}`);
         newChild.textContent = child.textContent;
         // Drop down should be set to user-selected value
         if (child.value === priority) {
@@ -195,7 +311,8 @@ function addEditButton(id, span, td, patchKey, inputType) {
 
         // User input (edit)
         const input = document.createElement('input');
-        input.setAttribute('id', 'userInput');
+        const editInputID = `input${id}${patchKey}`;
+        input.setAttribute('id', editInputID);
         input.type = inputType;
         input.value = span.textContent;
 
@@ -203,7 +320,8 @@ function addEditButton(id, span, td, patchKey, inputType) {
         const submitButton = document.createElement('input');
         submitButton.type = 'submit';
         submitButton.value = '✅'
-        submitButton.setAttribute('id', 'submit-button');
+        const submitButtonId = `button${id}{patchKey}`
+        submitButton.setAttribute('id', submitButtonId);
 
         editForm.append(input, submitButton);
 
@@ -224,7 +342,7 @@ function addEditButton(id, span, td, patchKey, inputType) {
                     'Accept': 'application/json',
                 },
                 body: JSON.stringify({
-                    [patchKey]: editFormEvent.target.userInput.value,
+                    [patchKey]: editFormEvent.target[editInputID].value,
                 })
             }
             fetch(`http://localhost:3000/tasks/${id}`, PATCH_OPTIONS)

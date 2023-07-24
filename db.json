@@ -1,37 +1,67 @@
 {
   "tasks": [
     {
-      "due-date": "",
+      "due-date": 3,
       "task": "Sort by priority",
       "priority": "High",
-      "is-done": false,
+      "is-done": true,
       "notes": "",
-      "id": 3,
-      "text": ""
+      "date-added": 3,
+      "id": 3
     },
     {
-      "due-date": "",
+      "due-date": 4,
       "task": "Sort by due date",
       "priority": "Medium",
-      "is-done": false,
+      "is-done": true,
       "notes": "",
+      "date-added": 4,
       "id": 4
     },
     {
-      "due-date": "",
+      "due-date": 5,
       "task": "[STRETCH GOAL] add 'archive' section",
-      "priority": "Medium",
-      "is-done": false,
-      "notes": "",
-      "id": 5
-    },
-    {
-      "due-date": "",
-      "task": "Add 'archive completed tasks' button",
       "priority": "Low",
       "is-done": false,
       "notes": "",
+      "date-added": 5,
+      "id": 5
+    },
+    {
+      "due-date": 6,
+      "task": "Add 'archive completed tasks' button",
+      "priority": "High",
+      "is-done": false,
+      "notes": "",
+      "date-added": 6,
       "id": 6
+    },
+    {
+      "due-date": 7,
+      "task": "Sort by date added",
+      "priority": "High",
+      "is-done": true,
+      "notes": "",
+      "date-added": 7,
+      "id": 7
+    },
+    {
+      "due-date": 1690156800000,
+      "task": "Make dates pretty!",
+      "priority": "High",
+      "is-done": false,
+      "notes": "",
+      "date-added": 1690231490953,
+      "id": 8
+    },
+    {
+      "due-date": 1690156800000,
+      "task": "Write the CSS!",
+      "priority": "High",
+      "is-done": false,
+      "notes": "",
+      "date-added": 1690231502129,
+      "id": 9
     }
   ]
 }
