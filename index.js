@@ -1,6 +1,7 @@
 // CONSTANTS
 const newTaskForm = document.querySelector("#new-task-form");
 const taskTable = document.querySelector('#task-table');
+const priorityDropdown = document.querySelector("#priority");
 
 
 // MAIN
@@ -9,6 +10,8 @@ const taskTable = document.querySelector('#task-table');
 fetch('http://localhost:3000/tasks')
 .then(resp => resp.json())
 .then(taskObjArr => {
+    // Autofill today's date in form due date field
+    newTaskForm['due-date'].value = getFormattedDate();
 
     // Render tasks in table
     taskObjArr.forEach(taskObj => addTaskObjToTable(taskObj));
@@ -34,6 +37,7 @@ fetch('http://localhost:3000/tasks')
                 'priority': priority,
                 'is-done': false,
                 'notes': notes,
+                'date-added': getFormattedDate(),
             })
         }
 
@@ -44,38 +48,63 @@ fetch('http://localhost:3000/tasks')
             addTaskObjToTable(newTaskObj);
             // Then, reset form
             newTaskForm.reset();
+            newTaskForm['due-date'].value = getFormattedDate();
         })
     })
 })
 
 
 
-
-
-
-
 // FUNCTIONS
 
-// Builds and appends table row
-function addTaskObjToTable(taskObj) {
-    addTaskToTable(taskObj.id, taskObj['due-date'], taskObj.task, taskObj.priority, taskObj['is-done'], taskObj.notes);
+// Returns a string 'YYYY-MM-DD'
+function getFormattedDate() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const date = (now.getDate()).toString().padStart(2, '0');
+    return `${year}-${month}-${date}`;
 }
 
 // Builds and appends table row
-function addTaskToTable(id, dueDate, task, priority, isDone, notes) {
+function addTaskObjToTable(taskObj) {
+    addTaskToTable(taskObj.id, taskObj['due-date'], taskObj.task, taskObj.priority, taskObj['is-done'], taskObj.notes, taskObj['date-added']);
+}
+
+// Builds and appends table row
+function addTaskToTable(id, dueDate, task, priority, isDone, notes, dateAdded) {
     const newRow = document.createElement('tr');
 
-    // Due date field -- we will update this to a date
-    const dueDateTD = document.createElement('td');
-    const dueDateSpan = document.createElement('span');
-    dueDateSpan.textContent = dueDate;
-    dueDateTD.appendChild(dueDateSpan);
-
-    // Priority field -- we will update this to a dropdown
+    // Priority field 
     const priorityTD = document.createElement('td');
-    const prioritySpan = document.createElement('span');
-    prioritySpan.textContent = priority;
-    priorityTD.appendChild(prioritySpan);
+    const newPriorityDropdown = priorityDropdown.cloneNode();
+    priorityDropdown.childNodes.forEach(child => {
+        const newChild = child.cloneNode();
+        newChild.textContent = child.textContent;
+        // Drop down should be set to user-selected value
+        if (child.value === priority) {
+            newChild.setAttribute("selected", true);
+        }
+        newPriorityDropdown.appendChild(newChild);
+    });
+    // When priority changed, patch to db
+    newPriorityDropdown.addEventListener('change', (e) => {
+        console.log(e.target.value);
+        const PATCH_OPTIONS = {
+            method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    "priority" : e.target.value,
+                })
+        }
+        // No .then() -- we're rendering optimistically and the response is not used
+        fetch(`http://localhost:3000/tasks/${id}`, PATCH_OPTIONS);
+    })
+    priorityTD.appendChild(newPriorityDropdown);
+
     
 
     // Add 'complete' button
@@ -109,7 +138,7 @@ function addTaskToTable(id, dueDate, task, priority, isDone, notes) {
     // Add delete button
     const deleteTD = document.createElement('td');
     const deleteButton = document.createElement('button');
-    deleteButton.textContent = " ❌ ";
+    deleteButton.textContent = "❌";
 
     // When clicked, button will remove row and fetch delete req to db
     deleteButton.addEventListener('click', () => {
@@ -120,9 +149,24 @@ function addTaskToTable(id, dueDate, task, priority, isDone, notes) {
     })
     deleteTD.appendChild(deleteButton);
 
+    
+    // Date added TD
+    const dateAddedTD = document.createElement('td');
+    const dateAddedSpan = document.createElement('span');
+    dateAddedSpan.textContent = dateAdded;
+    dateAddedTD.appendChild(dateAddedSpan);
+
 
     // Fill out row and append to table
-    newRow.append(dueDateTD, getEditableTD(task, id, "task"), priorityTD, isDoneTD, getEditableTD(notes, id, "notes"), deleteTD);
+    newRow.append(
+                    dateAddedTD,
+                    getEditableTD(dueDate, id, "due-date", 'date'), 
+                    getEditableTD(task, id, "task", 'text'), 
+                    priorityTD,
+                    isDoneTD, 
+                    getEditableTD(notes, id, "text"), 
+                    deleteTD
+                );
     taskTable.append(newRow);
 }
 
@@ -130,36 +174,49 @@ function strikethroughIfDone(node, isDone) {
     isDone ? node.style.textDecoration = "line-through" : node.style.textDecoration = '';
 }
 
-
-function getEditableTD(textContent, id, patchKey) {
+function getEditableTD(textContent, id, patchKey, inputType) {
     const td = document.createElement('td');
     const span = document.createElement('span');
     span.textContent = textContent;
     td.appendChild(span);
-    addEditButton(id, span, td, patchKey);
+    addEditButton(id, span, td, patchKey, inputType);
     return td;
 }
 
 // Appends an edit button to node
 // Click button to open edit form 
 // Submit form to patch to db and change text on screen
-function addEditButton(id, span, td, patchKey) {
+function addEditButton(id, span, td, patchKey, inputType) {
     const editButton = document.createElement('button');
     editButton.textContent = ' ✏️ '
     td.append(editButton);
-    editButton.onclick = () => {
+    editButton.onclick = (editButtonEvent) => {
         const editForm = document.createElement('form');
+
+        // User input (edit)
         const input = document.createElement('input');
-        input.setAttribute('id', 'textInput');
-        input.type = 'text';
+        input.setAttribute('id', 'userInput');
+        input.type = inputType;
         input.value = span.textContent;
-        editForm.appendChild(input);
-        // Remove old content
+
+        // Submit button
+        const submitButton = document.createElement('input');
+        submitButton.type = 'submit';
+        submitButton.value = '✅'
+        submitButton.setAttribute('id', 'submit-button');
+
+        editForm.append(input, submitButton);
+
+        // Remove old content & edit button
         span.remove();
+        editButtonEvent.target.remove();
+
+        // Replace with edit form (and submit button)
         td.prepend(editForm);
 
-        editForm.onsubmit = (e) => {
-            e.preventDefault();
+        // When form is submitted, edits patch to db and appear on screen
+        editForm.onsubmit = (editFormEvent) => {
+            editFormEvent.preventDefault();
             const PATCH_OPTIONS = {
                 method: 'PATCH',
                 headers: {
@@ -167,16 +224,21 @@ function addEditButton(id, span, td, patchKey) {
                     'Accept': 'application/json',
                 },
                 body: JSON.stringify({
-                    [patchKey]: e.target.textInput.value,
+                    [patchKey]: editFormEvent.target.userInput.value,
                 })
             }
             fetch(`http://localhost:3000/tasks/${id}`, PATCH_OPTIONS)
             .then(resp => resp.json())
             .then(patchedTaskObj => {
                 span.textContent = patchedTaskObj[patchKey];
+
                 editForm.remove();
+
+                // Reappend text span and edit button
                 td.prepend(span);
+                td.append(editButtonEvent.target);
             });
         }
     }
 }
+
