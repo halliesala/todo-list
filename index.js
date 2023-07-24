@@ -2,7 +2,10 @@
 const newTaskForm = document.querySelector("#new-task-form");
 const taskTable = document.querySelector('#task-table');
 
-// Get list of tasks from db & render in table
+
+// MAIN
+
+// Get list of tasks from db
 fetch('http://localhost:3000/tasks')
 .then(resp => resp.json())
 .then(taskObjArr => {
