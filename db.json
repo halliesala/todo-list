@@ -1,11 +1,11 @@
 {
   "tasks": [
     {
-      "due-date": 946684800000,
+      "due-date": 1690761600000,
       "task": "[STRETCH GOAL] add 'archive' section",
       "priority": "Low",
       "is-done": false,
-      "notes": "",
+      "notes": "Test!",
       "date-added": 5,
       "id": 5
     },
@@ -28,9 +28,9 @@
       "id": 9
     },
     {
-      "due-date": 1690243200000,
+      "due-date": 1690502400000,
       "task": "[STRETCH GOAL] sorting should persist",
-      "priority": "Low",
+      "priority": "High",
       "is-done": false,
       "notes": "",
       "date-added": 1690294356302,
@@ -39,11 +39,20 @@
     {
       "due-date": 1690243200000,
       "task": "Organize our code! It's hard to find the sections we want",
-      "priority": "Medium",
-      "is-done": false,
+      "priority": "High",
+      "is-done": true,
       "notes": "",
       "date-added": 1690298975853,
       "id": 12
+    },
+    {
+      "due-date": 1690243200000,
+      "task": "Get rid of timezone bug",
+      "priority": "Medium",
+      "is-done": false,
+      "notes": "All dates are losing 5 hours -- we probably don't want to have timezones! EDIT",
+      "date-added": 1690301907832,
+      "id": 13
     }
   ]
 }
