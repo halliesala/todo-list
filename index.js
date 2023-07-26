@@ -7,6 +7,7 @@ const addedSortButton = document.querySelector('#added-sort');
 const prioritySortButton = document.querySelector('#priority-sort');
 
 
+
 /**
  * 
  * 
@@ -184,6 +185,13 @@ fetch('http://localhost:3000/tasks')
             })
             priorityTD.appendChild(newPriorityDropdown);
 
+            /**
+             * 
+             * TASK DESCRIPTION
+             * 
+             */
+            const taskTD = getEditableTD(task, id, 'task', 'text');
+
 
             /**
              * 
@@ -193,9 +201,10 @@ fetch('http://localhost:3000/tasks')
 
             // Add 'complete' button
             const isDoneTD = document.createElement('td');
-            const completeButton = document.createElement('button');
-            completeButton.textContent = isDone ? 'DONE' : 'NOT DONE';
-            strikethroughIfDone(newRow, isDone);
+            const completeButton = document.createElement('span');
+
+            completeButton.textContent = isDone ? '✅' : '🔲';
+            strikethroughIfDone(taskTD, isDone);
 
             // When complete button is clicked, we update db, strikethrough the whole line, & update button
             completeButton.addEventListener('click', () => {
@@ -218,8 +227,8 @@ fetch('http://localhost:3000/tasks')
                         taskObjArr[idx] = patchedTaskObj;
 
                         // Update complete button text and cross out row if done
-                        completeButton.textContent = patchedTaskObj['is-done'] ? 'DONE' : 'NOT DONE';
-                        strikethroughIfDone(newRow, patchedTaskObj['is-done']);
+                        completeButton.textContent = patchedTaskObj['is-done'] ? '✅' : '🔲';
+                        strikethroughIfDone(taskTD, patchedTaskObj['is-done']);
                         isDone = !isDone;
                     });
             })
@@ -260,10 +269,11 @@ fetch('http://localhost:3000/tasks')
              * 
              */
 
+
             newRow.append(
                 dateAddedTD,
                 getEditableTD(formatDate(new Date(dueDate)), id, 'due-date', 'date'),
-                getEditableTD(task, id, 'task', 'text'),
+                taskTD,
                 priorityTD,
                 isDoneTD,
                 getEditableTD(notes, id, 'notes', 'text'),
@@ -305,6 +315,10 @@ fetch('http://localhost:3000/tasks')
                 const editButton = document.createElement('button');
                 editButton.textContent = ' ✏️ '
                 td.append(editButton);
+                if (inputType === 'text') {
+                    // Set class attribute to allow left alignment in styles.css
+                    td.setAttribute('class', 'left-align');
+                }
                 editButton.onclick = (editButtonEvent) => {
                     const editForm = document.createElement('form');
     
@@ -364,6 +378,8 @@ fetch('http://localhost:3000/tasks')
                                     // Convert epoch time to YYYY-MM-DD
                                     span.textContent = formatDate(new Date(patchedTaskObj[patchKey]));
                                 } else {
+                                    // Set class attribute to allow left alignment in styles.css
+                                    td.setAttribute('class', 'left-align');
                                     span.textContent = patchedTaskObj[patchKey];
                                 }
     
@@ -471,10 +487,11 @@ function getFormattedDate() {
 }
 
 // Returns dateObj as string `YYYY-mm-dd'
+// We use .getUTC methods to ensure dates appear as entered by user, without timezone conversions
 function formatDate(dateObj) {
-    const year = dateObj.getFullYear();
-    const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
-    const date = (dateObj.getDate()).toString().padStart(2, '0');
+    const year = dateObj.getUTCFullYear();
+    const month = (dateObj.getUTCMonth() + 1).toString().padStart(2, '0');
+    const date = (dateObj.getUTCDate()).toString().padStart(2, '0');
     return `${year}-${month}-${date}`;
 }
 
