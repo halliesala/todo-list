@@ -83,6 +83,9 @@ td {
 
 
 #new-task-form-container {
+    /* background-image: url("images/watercolor.png");
+    background-repeat: no-repeat;
+    background-size: cover; */
     position: sticky;
     bottom: 0;
     left: 0;
@@ -92,6 +95,7 @@ td {
 }
 
 body {
+    
     font-family: 'Courier New', Courier, monospace;
     text-align: center;
 }

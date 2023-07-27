@@ -1,17 +1,17 @@
 {
   "tasks": [
     {
-      "due-date": 1690761600000,
-      "task": "[STRETCH GOAL] add 'archive' section\n",
+      "due-date": 1690934400000,
+      "task": "[STRETCH GOAL] add 'archive' section",
       "priority": "Low",
       "is-done": false,
-      "notes": "",
+      "notes": "Test!",
       "date-added": 5,
       "id": 5
     },
     {
       "due-date": 1690416000000,
-      "task": "[STRETCH GOAL] Add 'archive completed tasks' button EDIT",
+      "task": "[STRETCH GOAL] Add 'archive completed tasks' button",
       "priority": "Low",
       "is-done": false,
       "notes": "",
@@ -32,13 +32,13 @@
       "task": "Must be in edit mode to edit table",
       "priority": "High",
       "is-done": true,
-      "notes": "",
+      "notes": "Edit mode is now on by default",
       "date-added": 1690393482908,
       "id": 14
     },
     {
       "due-date": 1690329600000,
-      "task": "editable fields should be visually distinguished",
+      "task": "Editable fields should be visually distinguished",
       "priority": "Medium",
       "is-done": false,
       "notes": "",
@@ -50,7 +50,7 @@
       "task": "When scrolled to bottom, there should be space between last table row and new task form",
       "priority": "Medium",
       "is-done": true,
-      "notes": "No content is actually cut off, but it looks dangerously close!",
+      "notes": "No content is actually cut off, but it looks dangerously close!\n",
       "date-added": 1690393642650,
       "id": 23
     },
@@ -94,7 +94,7 @@
       "due-date": 1690416000000,
       "task": "Rewrite JS file to use classes TaskObjArr and TaskObj",
       "priority": "High",
-      "is-done": false,
+      "is-done": true,
       "notes": "We have a lot of functions that take one or the other of these as arguments and would probably be better as methods of a class",
       "date-added": 1690416739346,
       "id": 28
@@ -130,8 +130,8 @@
       "due-date": 1690416000000,
       "task": "Sort table by multiple columns",
       "priority": "High",
-      "is-done": false,
-      "notes": "Sorting by A, then B should result in a list sorted by both",
+      "is-done": true,
+      "notes": "Sorting by A, then B should result in a list sorted by both\n\nObject-oriented version fixes this by sorting the TaskArray and re-rendering table",
       "date-added": 1690428223182,
       "id": 32
     },
@@ -139,7 +139,7 @@
       "due-date": 1690416000000,
       "task": "Edit icon should hover in top right corner",
       "priority": "High",
-      "is-done": false,
+      "is-done": true,
       "notes": "Otherwise we need to scroll to the top of list to go into edit mode",
       "date-added": 1690428517123,
       "id": 33
@@ -152,6 +152,69 @@
       "notes": "",
       "date-added": 1690428567999,
       "id": 34
+    },
+    {
+      "due-date": 1690416000000,
+      "task": "If an edit form is open, clicking on a different editable space should close the open form and open a new one",
+      "priority": "Low",
+      "is-done": false,
+      "notes": "",
+      "date-added": 1690466100694,
+      "id": 35
+    },
+    {
+      "due-date": 1690416000000,
+      "task": "Obj-oriented version 'done' styling bug",
+      "priority": "High",
+      "is-done": true,
+      "notes": "No 'done' styling upon loading page",
+      "date-added": 1690473459115,
+      "id": 36
+    },
+    {
+      "due-date": 1690416000000,
+      "task": "Bug in OOV -- when we edit dates, they render as NaN-NaN-NaN.",
+      "priority": "High",
+      "is-done": true,
+      "notes": "",
+      "date-added": 1690476918984,
+      "id": 37
+    },
+    {
+      "due-date": 1690416000000,
+      "task": "Render line breaks correctly.",
+      "priority": "High",
+      "is-done": false,
+      "notes": "",
+      "date-added": 1690478349484,
+      "id": 38
+    },
+    {
+      "due-date": 1693094400000,
+      "task": "Issue editing Tasks (and presumably notes?) added via form. It patches, but doesn't render -- issue at line 161 with .getIndexOfId being called with undefined.",
+      "priority": "High",
+      "is-done": true,
+      "notes": "Resolved by calling renderTable() again rather than attempting to add just new row via addTaskToTable()",
+      "date-added": 1690478452328,
+      "id": 39
+    },
+    {
+      "due-date": 4120329600000,
+      "task": "Bug in OOV -- edits don't persist after sorting",
+      "priority": "High",
+      "is-done": true,
+      "notes": "FIXED -- edits and sorts now work as expected",
+      "date-added": 1690480519400,
+      "id": 41
+    },
+    {
+      "due-date": 1690416000000,
+      "task": "BUG -- updates aren't rendering immediately, though they are patching",
+      "priority": "High",
+      "is-done": true,
+      "notes": "",
+      "date-added": 1690481774896,
+      "id": 42
     }
   ]
 }
