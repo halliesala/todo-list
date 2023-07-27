@@ -184,7 +184,7 @@
       "due-date": 1690416000000,
       "task": "Render line breaks correctly.",
       "priority": "High",
-      "is-done": false,
+      "is-done": true,
       "notes": "",
       "date-added": 1690478349484,
       "id": 38
@@ -201,7 +201,7 @@
     {
       "due-date": 4120329600000,
       "task": "Bug in OOV -- edits don't persist after sorting",
-      "priority": "High",
+      "priority": "Low",
       "is-done": true,
       "notes": "FIXED -- edits and sorts now work as expected",
       "date-added": 1690480519400,
