@@ -12,8 +12,10 @@ const editIcon = document.querySelector('#edit-icon');
 const emptyCheckboxSrc = 'images/checkbox-empty.svg';
 const greenCheckSrc = 'images/green_check.png';
 
-// STATE VARIABLE
+// STATE VARIABLES
 let editMode = false;
+let editFormOpen = false;
+
 
 
 /**
@@ -337,36 +339,37 @@ fetch('http://localhost:3000/tasks')
             span.textContent = textContent;
             td.appendChild(span);
             //addEditButton(id, span, td, patchKey, inputType);
-            let editFormOpen = false;
             td.onclick = (editTDEvent) => {
 
                 // Check if edit form is already open; if so, don't open another
-                if (editFormOpen) return;
+                if (editFormOpen || !editMode) return;
                 editFormOpen = !editFormOpen;
 
                 const editForm = document.createElement('form');
-
-                // User input (edit)
-                let input;
-                if (inputType === 'text') {
-                    input = document.createElement('textarea');
-                    //input.rows = 3;
-                    //input.cols = 60;
-                    input.textContent = span.textContent;
-                } else {
-                    input = document.createElement('input');
-                    input.type = inputType;
-                    input.value = span.textContent;
-                }
-                const editInputID = `input${id}${patchKey}`;
-                input.setAttribute('id', editInputID);
+                editForm.classList.add('grow-wrap');
 
                 // Submit button
                 const submitButton = document.createElement('input');
                 submitButton.type = 'submit';
-                submitButton.value = '✅';
-                const submitButtonId = `button${id}{patchKey}`;
+                const submitButtonId = `button${id}${patchKey}`;
                 submitButton.setAttribute('id', submitButtonId);
+                
+                
+                // User input 
+                let input;
+                if (inputType === 'text') {
+                    input = document.createElement('textarea');
+                    input.textContent = span.textContent;
+                    submitButton.classList.add('submit-text-edits');
+                } else if (inputType === 'date') {
+                    input = document.createElement('input');
+                    input.type = inputType;
+                    input.value = span.textContent;
+                    submitButton.classList.add('submit-date-edits')
+                }
+                const editInputID = `input${id}${patchKey}`;
+                input.setAttribute('id', editInputID);
+
 
                 editForm.append(input, submitButton);
 

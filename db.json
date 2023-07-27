@@ -31,7 +31,7 @@
       "due-date": 1690329600000,
       "task": "Must be in edit mode to edit table",
       "priority": "High",
-      "is-done": false,
+      "is-done": true,
       "notes": "",
       "date-added": 1690393482908,
       "id": 14
@@ -49,7 +49,7 @@
       "due-date": 1690329600000,
       "task": "When scrolled to bottom, there should be space between last table row and new task form",
       "priority": "Medium",
-      "is-done": false,
+      "is-done": true,
       "notes": "No content is actually cut off, but it looks dangerously close!",
       "date-added": 1690393642650,
       "id": 23
@@ -68,7 +68,7 @@
       "task": "Add hover background color to 'Done' checkbox and edit icon",
       "priority": "Medium",
       "is-done": true,
-      "notes": "We haven't figured out how to do this without messing up other conditional styling in JS file -- possibly ALL styling should be done via the CSS sheet?",
+      "notes": "We haven't figured out how to do this without messing up other conditional styling in JS file -- possibly ALL styling should be done via the CSS sheet?\n\n\n",
       "date-added": 1690416404562,
       "id": 25
     },
@@ -85,7 +85,7 @@
       "due-date": 1690416000000,
       "task": "Edit form should be exactly the size of the TD",
       "priority": "High",
-      "is-done": false,
+      "is-done": true,
       "notes": "",
       "date-added": 1690416656536,
       "id": 27
@@ -101,7 +101,7 @@
     },
     {
       "due-date": 1690416000000,
-      "task": "Filter by priority, complete status",
+      "task": "Filter by priority, complete status, due date",
       "priority": "Medium",
       "is-done": false,
       "notes": "",
@@ -112,7 +112,7 @@
       "due-date": 1690416000000,
       "task": "Make edit form submit buttons pretty",
       "priority": "High",
-      "is-done": false,
+      "is-done": true,
       "notes": "",
       "date-added": 1690416868729,
       "id": 30
@@ -125,6 +125,33 @@
       "notes": "I tried downloading js-confetti, but it requires 'modules', which caused problems with 'cross-origin requests'. So confetti seems maybe above my pay grade for now.",
       "date-added": 1690416890484,
       "id": 31
+    },
+    {
+      "due-date": 1690416000000,
+      "task": "Sort table by multiple columns",
+      "priority": "High",
+      "is-done": false,
+      "notes": "Sorting by A, then B should result in a list sorted by both",
+      "date-added": 1690428223182,
+      "id": 32
+    },
+    {
+      "due-date": 1690416000000,
+      "task": "Edit icon should hover in top right corner",
+      "priority": "High",
+      "is-done": false,
+      "notes": "Otherwise we need to scroll to the top of list to go into edit mode",
+      "date-added": 1690428517123,
+      "id": 33
+    },
+    {
+      "due-date": 1690416000000,
+      "task": "Submit multi-line forms with cmd+enter or ctrl+enter",
+      "priority": "Medium",
+      "is-done": false,
+      "notes": "",
+      "date-added": 1690428567999,
+      "id": 34
     }
   ]
 }
