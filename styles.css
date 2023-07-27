@@ -1,0 +1,143 @@
+/* Title */
+
+#title-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+h1 {
+    font-family: 'Courier New', Courier, monospace;
+    padding: 1rem;
+}
+
+#edit-icon {
+    height: 2rem;
+    position: relative;
+    border-radius: 100%;
+    padding: 0.5rem;
+}
+
+#edit-icon:hover {
+    background-color: #fdf496;
+
+}
+
+.edit-mode {
+    background-color: #fdf496;
+}
+
+
+#edit-icon-box {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: baseline;
+}
+
+
+/* Table */
+
+#table-container {
+    display: flex;
+    flex-flow: column;
+    flex : 1;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-color: #efecee;
+    border-collapse: collapse;
+}
+
+table {
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+}
+
+th {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+th, td {
+    padding: 5px 10px;
+}
+
+td {
+    max-width: 20ch;
+    word-wrap: break-word;
+}
+
+
+
+#wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+
+
+
+#new-task-form-container {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgb(231, 251, 229);
+    padding: 30px;
+}
+
+body {
+    /*background-image: url("images/blank_paper_on_desk.png");
+    background-repeat: no-repeat;
+    background-size: cover;*/
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+}
+
+.left-align {
+    text-align: left;
+}
+
+
+
+
+
+
+.checkbox-img {
+    height: 1rem;
+}
+
+
+.checkbox-img:hover {
+    padding: 0.5rem;
+    border-radius: 30%;
+    background-color: rgba(0, 128, 0, 0.094);
+}
+
+tr:hover {
+    background-color: aliceblue;
+    color: cornflowerblue;
+}
+
+.delete-button {
+    height: 1rem;
+    padding: 0.5rem;
+}
+
+.delete-button:hover {
+    border-radius: 30%;
+    background-color: rgba(255, 0, 0, 0.124);
+}
+
+.complete-task {
+    text-decoration: line-through;
+}
+
+.complete-row {
+    color: rgba(81, 19, 61, 0.53);
+}
+

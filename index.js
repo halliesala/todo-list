@@ -5,6 +5,38 @@ const priorityDropdown = document.querySelector("#priority");
 const dueSortButton = document.querySelector('#due-sort');
 const addedSortButton = document.querySelector('#added-sort');
 const prioritySortButton = document.querySelector('#priority-sort');
+const editIcon = document.querySelector('#edit-icon');
+
+
+// IMAGES
+const emptyCheckboxSrc = 'images/checkbox-empty.svg';
+const greenCheckSrc = 'images/green_check.png';
+
+// STATE VARIABLE
+let editMode = false;
+
+
+/**
+ * 
+ * EDIT MODE
+ * 
+ * When edit icon is clicked, go into edit mode
+ * In edit mode, click table fields to edit
+ * 
+ */
+
+editIcon.addEventListener('click', () => {
+    editMode = !editMode;
+    if (editMode) {
+        // Show edit instructions & highlight edit icon
+        editIcon.classList.add('edit-mode');
+    } else {
+        // Hide edit instructions & remove highlight
+        editIcon.classList.remove('edit-mode');
+    }
+})
+
+
 
 
 /**
@@ -22,10 +54,10 @@ const prioritySortButton = document.querySelector('#priority-sort');
 fetch('http://localhost:3000/tasks')
     .then(resp => resp.json())
     .then(taskObjArr => {
-        
+
         // Render tasks in table
         taskObjArr.forEach(taskObj => addTaskObjToTable(taskObj));
-        
+
         /**
          * 
          * NEW TASK FORM
@@ -82,11 +114,11 @@ fetch('http://localhost:3000/tasks')
          * 
          */
 
-        
+
         function sortEventHandler(e, compareFunc, compareFuncParam) {
             // Replace all rows with just header row
-            taskTable.replaceChildren(taskTable.firstElementChild);     
-            taskObjArr.sort(compareFunc(compareFuncParam));             
+            taskTable.replaceChildren(taskTable.firstElementChild);
+            taskObjArr.sort(compareFunc(compareFuncParam));
             taskObjArr.forEach(taskObj => {
                 addTaskObjToTable(taskObj)
             });
@@ -112,9 +144,9 @@ fetch('http://localhost:3000/tasks')
 
             // Store taskObj values in same-named variables
             // id and dateAdded should never change; other variables can be updated
-            const {id} = taskObj;
+            const { id } = taskObj;
             const dateAdded = taskObj['date-added'];
-            let {task, priority, notes} = taskObj;
+            let { task, priority, notes } = taskObj;
             let dueDate = taskObj['due-date'];
             let isDone = taskObj['is-done'];
 
@@ -184,6 +216,13 @@ fetch('http://localhost:3000/tasks')
             })
             priorityTD.appendChild(newPriorityDropdown);
 
+            /**
+             * 
+             * TASK DESCRIPTION
+             * 
+             */
+            const taskTD = getEditableTD(task, id, 'task', 'text');
+
 
             /**
              * 
@@ -191,14 +230,14 @@ fetch('http://localhost:3000/tasks')
              * 
              */
 
-            // Add 'complete' button
             const isDoneTD = document.createElement('td');
-            const completeButton = document.createElement('button');
-            completeButton.textContent = isDone ? 'DONE' : 'NOT DONE';
-            strikethroughIfDone(newRow, isDone);
+            const completeImg = document.createElement('img');
+            completeImg.setAttribute('class', 'checkbox-img');
+            completeImg.src = isDone ? greenCheckSrc : emptyCheckboxSrc;
+            formatIfDone(taskTD, newRow, isDone);
 
-            // When complete button is clicked, we update db, strikethrough the whole line, & update button
-            completeButton.addEventListener('click', () => {
+            // When complete button is clicked, we update db & taskObjArr and render changes
+            completeImg.addEventListener('click', (e) => {
                 const PATCH_OPTIONS = {
                     method: 'PATCH',
                     headers: {
@@ -212,18 +251,18 @@ fetch('http://localhost:3000/tasks')
                 fetch(`http://localhost:3000/tasks/${id}`, PATCH_OPTIONS)
                     .then(resp => resp.json())
                     .then(patchedTaskObj => {
-        
+
                         // Update taskObjArr with patched content
                         const idx = getArrIndexByObjID(taskObjArr, patchedTaskObj.id);
                         taskObjArr[idx] = patchedTaskObj;
 
                         // Update complete button text and cross out row if done
-                        completeButton.textContent = patchedTaskObj['is-done'] ? 'DONE' : 'NOT DONE';
-                        strikethroughIfDone(newRow, patchedTaskObj['is-done']);
+                        e.target.src = patchedTaskObj['is-done'] ? greenCheckSrc : emptyCheckboxSrc;
+                        formatIfDone(taskTD, newRow, patchedTaskObj['is-done']);
                         isDone = !isDone;
                     });
             })
-            isDoneTD.appendChild(completeButton);
+            isDoneTD.appendChild(completeImg);
 
 
             /**
@@ -234,8 +273,9 @@ fetch('http://localhost:3000/tasks')
 
             // Add delete button
             const deleteTD = document.createElement('td');
-            const deleteButton = document.createElement('button');
-            deleteButton.textContent = "❌";
+            const deleteButton = document.createElement('img');
+            deleteButton.setAttribute('class', 'delete-button');
+            deleteButton.src = 'images/delete_icon.png';
 
             // When clicked, button will remove row and fetch delete req to db
             deleteButton.addEventListener('click', () => {
@@ -251,7 +291,7 @@ fetch('http://localhost:3000/tasks')
             })
             deleteTD.appendChild(deleteButton);
 
-            
+
             /**
              * 
              * BUILD ROW AND APPEND TO TABLE
@@ -260,10 +300,11 @@ fetch('http://localhost:3000/tasks')
              * 
              */
 
+
             newRow.append(
                 dateAddedTD,
                 getEditableTD(formatDate(new Date(dueDate)), id, 'due-date', 'date'),
-                getEditableTD(task, id, 'task', 'text'),
+                taskTD,
                 priorityTD,
                 isDoneTD,
                 getEditableTD(notes, id, 'notes', 'text'),
@@ -287,100 +328,104 @@ fetch('http://localhost:3000/tasks')
         function getEditableTD(textContent, id, patchKey, inputType) {
             const td = document.createElement('td');
             const span = document.createElement('span');
+
+            // Left align editable text elements; otherwise center align
+            if (inputType === 'text') {
+                td.classList.add('left-align');
+            }
+
             span.textContent = textContent;
             td.appendChild(span);
-            addEditButton(id, span, td, patchKey, inputType);
-            return td;
+            //addEditButton(id, span, td, patchKey, inputType);
+            let editFormOpen = false;
+            td.onclick = (editTDEvent) => {
 
-            /**
-             * 
-             * 
-             * Appends an edit button to td 
-             * Click button to open edit form
-             * Submit form to patch to db and change text on screen
-             * 
-             */
+                // Check if edit form is already open; if so, don't open another
+                if (editFormOpen) return;
+                editFormOpen = !editFormOpen;
 
-            function addEditButton(id, span, td, patchKey, inputType) {
-                const editButton = document.createElement('button');
-                editButton.textContent = ' ✏️ '
-                td.append(editButton);
-                editButton.onclick = (editButtonEvent) => {
-                    const editForm = document.createElement('form');
-    
-                    // User input (edit)
-                    const input = document.createElement('input');
-                    const editInputID = `input${id}${patchKey}`;
-                    input.setAttribute('id', editInputID);
+                const editForm = document.createElement('form');
+
+                // User input (edit)
+                let input;
+                if (inputType === 'text') {
+                    input = document.createElement('textarea');
+                    //input.rows = 3;
+                    //input.cols = 60;
+                    input.textContent = span.textContent;
+                } else {
+                    input = document.createElement('input');
                     input.type = inputType;
                     input.value = span.textContent;
-    
-                    // Submit button
-                    const submitButton = document.createElement('input');
-                    submitButton.type = 'submit';
-                    submitButton.value = '✅'
-                    const submitButtonId = `button${id}{patchKey}`
-                    submitButton.setAttribute('id', submitButtonId);
-    
-                    editForm.append(input, submitButton);
-    
-                    // Remove old content & edit button
-                    span.remove();
-                    editButtonEvent.target.remove();
-    
-                    // Replace with edit form (and submit button)
-                    td.prepend(editForm);
-    
-                    // When form is submitted, edits patch to db and appear on screen
-                    editForm.onsubmit = (editFormEvent) => {
-                        editFormEvent.preventDefault();
-    
-                        // If user input is date, convert to milliseconds
-                        if (inputType === 'date') {
-                            const inMS = (new Date(editFormEvent.target[editInputID].value)).getTime();
-                            body = inMS;
-                        } else {
-                            body = editFormEvent.target[editInputID].value;
-                        }
-    
-                        const PATCH_OPTIONS = {
-                            method: 'PATCH',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Accept': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                [patchKey]: body,
-                            })
-                        }
-                        fetch(`http://localhost:3000/tasks/${id}`, PATCH_OPTIONS)
-                            .then(resp => resp.json())
-                            .then(patchedTaskObj => {
-                                // Update taskObjArr with patched content
-                                const idx = getArrIndexByObjID(taskObjArr, patchedTaskObj.id);
-                                taskObjArr[idx] = patchedTaskObj;
-    
-                                if (inputType === 'date') {
-                                    // Convert epoch time to YYYY-MM-DD
-                                    span.textContent = formatDate(new Date(patchedTaskObj[patchKey]));
-                                } else {
-                                    span.textContent = patchedTaskObj[patchKey];
-                                }
-    
-                                editForm.remove();
-    
-                                // Reappend text span and edit button
-                                td.prepend(span);
-                                td.append(editButtonEvent.target);
-                            });
+                }
+                const editInputID = `input${id}${patchKey}`;
+                input.setAttribute('id', editInputID);
+
+                // Submit button
+                const submitButton = document.createElement('input');
+                submitButton.type = 'submit';
+                submitButton.value = '✅';
+                const submitButtonId = `button${id}{patchKey}`;
+                submitButton.setAttribute('id', submitButtonId);
+
+                editForm.append(input, submitButton);
+
+                // Remove old content & edit button
+                span.remove();
+
+                // Replace with edit form (and submit button)
+                td.prepend(editForm);
+
+                // When form is submitted, edits patch to db and appear on screen
+                editForm.onsubmit = (editFormEvent) => {
+                    editFormEvent.preventDefault();
+
+                    // If user input is date, convert to milliseconds
+                    if (inputType === 'date') {
+                        const inMS = (new Date(editFormEvent.target[editInputID].value)).getTime();
+                        body = inMS;
+                    } else {
+                        // Otherwise we patch exactly what the user submitted
+
+                        body = editFormEvent.target[editInputID].value;
                     }
+
+                    const PATCH_OPTIONS = {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            [patchKey]: body,
+                        })
+                    }
+                    fetch(`http://localhost:3000/tasks/${id}`, PATCH_OPTIONS)
+                        .then(resp => resp.json())
+                        .then(patchedTaskObj => {
+                            // Update taskObjArr with patched content
+                            const idx = getArrIndexByObjID(taskObjArr, patchedTaskObj.id);
+                            taskObjArr[idx] = patchedTaskObj;
+
+                            if (inputType === 'date') {
+                                // Convert epoch time to YYYY-MM-DD
+                                span.textContent = formatDate(new Date(patchedTaskObj[patchKey]));
+                            } else {
+                                // Set class attribute to allow left alignment in styles.css
+                                td.classList.add('left-align');
+
+                                span.textContent = patchedTaskObj[patchKey];
+                            }
+
+                            editForm.remove();
+                            editFormOpen = !editFormOpen;
+                            td.appendChild(span);
+                        });
                 }
             }
+            return td;
         }
-
-    })
-
-
+    });
 
 
 
@@ -388,9 +433,15 @@ fetch('http://localhost:3000/tasks')
 // These functions don't need access to taskObjArr
 
 
-// If isDone, strikethrough node
-function strikethroughIfDone(node, isDone) {
-    isDone ? node.style.textDecoration = "line-through" : node.style.textDecoration = '';
+// If task complete, format table row
+function formatIfDone(taskTD, row, isDone) {
+    if (isDone) {
+        taskTD.classList.add('complete-task');
+        row.classList.add('complete-row');
+    } else {
+        taskTD.classList.remove('complete-task');
+        row.classList.remove('complete-row');
+    }
 }
 
 // Takes an array of objects; returns idx of object with id
@@ -421,7 +472,7 @@ function getArrIndexByObjID(objArr, id) {
         return !toggle ? aMS - bMS : bMS - aMS; 
     }
 * 
-* */ 
+* */
 
 // State variable -- toggle between ascending & descending sorts
 const toggle = {
@@ -471,10 +522,11 @@ function getFormattedDate() {
 }
 
 // Returns dateObj as string `YYYY-mm-dd'
+// We use .getUTC methods to ensure dates appear as entered by user, without timezone conversions
 function formatDate(dateObj) {
-    const year = dateObj.getFullYear();
-    const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
-    const date = (dateObj.getDate()).toString().padStart(2, '0');
+    const year = dateObj.getUTCFullYear();
+    const month = (dateObj.getUTCMonth() + 1).toString().padStart(2, '0');
+    const date = (dateObj.getUTCDate()).toString().padStart(2, '0');
     return `${year}-${month}-${date}`;
 }
 
