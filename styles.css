@@ -1,9 +1,51 @@
+/* Title */
+
+#title-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
 h1 {
     font-family: 'Courier New', Courier, monospace;
+    padding: 1rem;
+}
+
+#edit-icon {
+    height: 2rem;
+    position: relative;
+    border-radius: 100%;
+    padding: 0.5rem;
+}
+
+#edit-icon:hover {
+    background-color: #fdf496;
+
+}
+
+.edit-mode {
+    background-color: #fdf496;
+}
+
+
+#edit-icon-box {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: baseline;
+}
+
+
+/* Table */
+
+#table-container {
+    display: flex;
+    flex-flow: column;
+    flex : 1;
 }
 
 table, th, td {
-    border: 1px solid;
+    border: 1px solid black;
     border-color: #efecee;
     border-collapse: collapse;
 }
@@ -23,15 +65,20 @@ th, td {
     padding: 5px 10px;
 }
 
+td {
+    max-width: 20ch;
+    word-wrap: break-word;
+}
+
+
+
 #wrapper {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
-#content {
-    flex : 1;
-}
+
 
 
 #new-task-form-container {
@@ -39,7 +86,7 @@ th, td {
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: white;
+    background-color: rgb(231, 251, 229);
     padding: 30px;
 }
 
@@ -55,70 +102,42 @@ body {
     text-align: left;
 }
 
-button {
-    float: right;
-    align-items: center;
-    background-color: transparent;
-    border-color: transparent;
+
+
+
+
+
+.checkbox-img {
+    height: 1rem;
 }
 
 
-/* CSS */
-/* button {
-  float: right;
-  align-items: center;
-  background-color: #fee6e3;
-  border: 1px solid #111;
-  border-radius: 8px;
-  box-sizing: border-box;
-  color: #111;
-  cursor: pointer;
-  display: flex;
-  font-family: Inter,sans-serif;
-  font-size: 16px;
-  height: 25px;
-  justify-content: center;
-  line-height: 24px;
-  max-width: 10%;
-  padding: 50 50px;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
+.checkbox-img:hover {
+    padding: 0.5rem;
+    border-radius: 30%;
+    background-color: rgba(0, 128, 0, 0.094);
 }
 
-button:after {
-  background-color: #111;
-  border-radius: 8px;
-  content: "";
-  display: block;
-  height: 20px;
-  left: 0;
-  width: 10%;
-  position: absolute;
-  top: -2px;
-  transform: translate(8px, 8px);
-  transition: transform .2s ease-out;
-  z-index: -1;
+tr:hover {
+    background-color: aliceblue;
+    color: cornflowerblue;
 }
 
-button:hover:after {
-  transform: translate(0, 0);
+.delete-button {
+    height: 1rem;
+    padding: 0.5rem;
 }
 
-button:active {
-  background-color: #ffdeda;
-  outline: 0;
+.delete-button:hover {
+    border-radius: 30%;
+    background-color: rgba(255, 0, 0, 0.124);
 }
 
-button:hover {
-  outline: 0;
+.complete-task {
+    text-decoration: line-through;
 }
 
-@media (min-width: 768px) {
-  button {
-    padding: 0 20px;
-  }
-} */
+.complete-row {
+    color: rgba(81, 19, 61, 0.53);
+}
+

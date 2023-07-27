@@ -1,8 +1,8 @@
 {
   "tasks": [
     {
-      "due-date": 1690675200000,
-      "task": "[STRETCH GOAL] add 'archive' section",
+      "due-date": 1690761600000,
+      "task": "[STRETCH GOAL] add 'archive' section\n",
       "priority": "Low",
       "is-done": false,
       "notes": "",
@@ -10,22 +10,13 @@
       "id": 5
     },
     {
-      "due-date": -631152000000,
-      "task": "[STRETCH GOAL] Add 'archive completed tasks' button",
-      "priority": "Medium",
+      "due-date": 1690416000000,
+      "task": "[STRETCH GOAL] Add 'archive completed tasks' button EDIT",
+      "priority": "Low",
       "is-done": false,
       "notes": "",
       "date-added": 6,
       "id": 6
-    },
-    {
-      "due-date": 1690156800000,
-      "task": "Write the CSS!",
-      "priority": "High",
-      "is-done": false,
-      "notes": "",
-      "date-added": 1690231502129,
-      "id": 9
     },
     {
       "due-date": 1690502400000,
@@ -35,6 +26,105 @@
       "notes": "",
       "date-added": 1690294356302,
       "id": 11
+    },
+    {
+      "due-date": 1690329600000,
+      "task": "Must be in edit mode to edit table",
+      "priority": "High",
+      "is-done": false,
+      "notes": "",
+      "date-added": 1690393482908,
+      "id": 14
+    },
+    {
+      "due-date": 1690329600000,
+      "task": "editable fields should be visually distinguished",
+      "priority": "Medium",
+      "is-done": false,
+      "notes": "",
+      "date-added": 1690393491380,
+      "id": 15
+    },
+    {
+      "due-date": 1690329600000,
+      "task": "When scrolled to bottom, there should be space between last table row and new task form",
+      "priority": "Medium",
+      "is-done": false,
+      "notes": "No content is actually cut off, but it looks dangerously close!",
+      "date-added": 1690393642650,
+      "id": 23
+    },
+    {
+      "due-date": 1690329600000,
+      "task": "Add tooltip to edit icon",
+      "priority": "High",
+      "is-done": false,
+      "notes": "Should give instructions for editing table",
+      "date-added": 1690394936433,
+      "id": 24
+    },
+    {
+      "due-date": 1690416000000,
+      "task": "Add hover background color to 'Done' checkbox and edit icon",
+      "priority": "Medium",
+      "is-done": true,
+      "notes": "We haven't figured out how to do this without messing up other conditional styling in JS file -- possibly ALL styling should be done via the CSS sheet?",
+      "date-added": 1690416404562,
+      "id": 25
+    },
+    {
+      "due-date": 1690416000000,
+      "task": "Add min widths to table columns",
+      "priority": "High",
+      "is-done": false,
+      "notes": "",
+      "date-added": 1690416501627,
+      "id": 26
+    },
+    {
+      "due-date": 1690416000000,
+      "task": "Edit form should be exactly the size of the TD",
+      "priority": "High",
+      "is-done": false,
+      "notes": "",
+      "date-added": 1690416656536,
+      "id": 27
+    },
+    {
+      "due-date": 1690416000000,
+      "task": "Rewrite JS file to use classes TaskObjArr and TaskObj",
+      "priority": "High",
+      "is-done": false,
+      "notes": "We have a lot of functions that take one or the other of these as arguments and would probably be better as methods of a class",
+      "date-added": 1690416739346,
+      "id": 28
+    },
+    {
+      "due-date": 1690416000000,
+      "task": "Filter by priority, complete status",
+      "priority": "Medium",
+      "is-done": false,
+      "notes": "",
+      "date-added": 1690416790994,
+      "id": 29
+    },
+    {
+      "due-date": 1690416000000,
+      "task": "Make edit form submit buttons pretty",
+      "priority": "High",
+      "is-done": false,
+      "notes": "",
+      "date-added": 1690416868729,
+      "id": 30
+    },
+    {
+      "due-date": 1690416000000,
+      "task": "Confetti when checking off task?",
+      "priority": "Low",
+      "is-done": false,
+      "notes": "I tried downloading js-confetti, but it requires 'modules', which caused problems with 'cross-origin requests'. So confetti seems maybe above my pay grade for now.",
+      "date-added": 1690416890484,
+      "id": 31
     }
   ]
 }

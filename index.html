@@ -9,16 +9,21 @@
     </head>
     <body>
         <div id="wrapper">
-            <div id="content">
+            <div id="title-container">
                 <h1>My To-Do List</h1>
+                <span id="edit-icon-box"><img id="edit-icon" src="images/edit_icon.png"></span>
+                
+            </div>
+            <div id="table-container">
                 <table id="task-table">
                     <tr>
-                        <th><span>Date Added</span><button id="added-sort">ꜛꜜ</button></th>
-                        <th><span>Due</span><button id="due-sort">ꜛꜜ</button></th>
+                        <th class='sort-button' id="added-sort">Date Added ꜛꜜ</th>
+                        <th class='sort-button' id="due-sort">Due ꜛꜜ</th>
                         <th>Task</th>
-                        <th><span>Priority</span><button id="priority-sort">ꜛꜜ</button></th>
+                        <th class='sort-button' id="priority-sort">Priority ꜛꜜ</th>
                         <th>Done?</th>
                         <th>Notes</th>
+                        <th>Delete</th>
                     </tr>
                 </table>
             </div>
@@ -30,7 +35,7 @@
                     <input type="text" id="task">
                     <label for="priority">Priority</label>
                     <select id="priority">
-                        <option value="High">High</option>
+                        <option class='priority-option' value="High">High</option>
                         <option value="Medium">Medium</option>
                         <option value="Low">Low</option>
                     </select>
