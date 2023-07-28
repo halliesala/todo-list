@@ -346,10 +346,12 @@ fetch('http://localhost:3000/tasks')
         editIcon.addEventListener('click', () => {
             if (editMode) {
                 // Hide edit instructions & remove highlight
+                editIcon.classList.add('read-mode')
                 editIcon.classList.remove('edit-mode');
             } else {
                 // Show edit instructions & highlight edit icon
                 editIcon.classList.add('edit-mode');
+                editIcon.classList.remove('read-mode');
             }
             editMode = !editMode;
         });
