@@ -2,21 +2,12 @@
   "tasks": [
     {
       "due-date": 1690934400000,
-      "task": "[STRETCH GOAL] add 'archive' section",
+      "task": "[STRETCH GOAL] add 'archive' section and 'archive completed tasks' button",
       "priority": "Low",
       "is-done": false,
-      "notes": "Test!",
+      "notes": "View archived tasks in separate tab?",
       "date-added": 5,
       "id": 5
-    },
-    {
-      "due-date": 1690416000000,
-      "task": "[STRETCH GOAL] Add 'archive completed tasks' button",
-      "priority": "Low",
-      "is-done": false,
-      "notes": "",
-      "date-added": 6,
-      "id": 6
     },
     {
       "due-date": 1690502400000,
@@ -215,6 +206,42 @@
       "notes": "",
       "date-added": 1690481774896,
       "id": 42
+    },
+    {
+      "due-date": 1690416000000,
+      "task": "Keyboard shortcut for edit mode",
+      "priority": "High",
+      "is-done": false,
+      "notes": "",
+      "date-added": 1690493696883,
+      "id": 43
+    },
+    {
+      "due-date": 1690416000000,
+      "task": "Style header row",
+      "priority": "High",
+      "is-done": true,
+      "notes": "",
+      "date-added": 1690493713669,
+      "id": 44
+    },
+    {
+      "due-date": 1690416000000,
+      "task": "Bug -- can't edit after deleting\n\nUnclear whether this applies to new tasks, existing tasks, or both",
+      "priority": "High",
+      "is-done": true,
+      "notes": "Can't replicate for either new or existing tasks -- I think it's possible I had another edit form open somewhere and mistook the edit blocker.",
+      "date-added": 1690494943820,
+      "id": 45
+    },
+    {
+      "due-date": 1690416000000,
+      "task": "Remove line-through for complete items when editing",
+      "priority": "High",
+      "is-done": false,
+      "notes": "",
+      "date-added": 1690496983779,
+      "id": 46
     }
   ]
 }

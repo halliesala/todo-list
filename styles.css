@@ -1,3 +1,8 @@
+body {
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+}
+
 /* Title */
 
 #title-container {
@@ -7,7 +12,6 @@
 }
 
 h1 {
-    font-family: 'Courier New', Courier, monospace;
     padding: 1rem;
 }
 
@@ -18,13 +22,20 @@ h1 {
     padding: 0.5rem;
 }
 
-#edit-icon:hover {
-    background-color: #fdf496;
-
-}
-
 .edit-mode {
     background-color: #fdf496;
+}
+
+.edit-mode:hover {
+    border: 1px solid black;
+}
+
+.read-mode {
+    background-color: white;
+}
+
+.read-mode:hover {
+    border: 1px solid #99934a;
 }
 
 
@@ -44,14 +55,14 @@ h1 {
     flex : 1;
 }
 
-table, th, td {
+#task-table, th, td {
     border: 1px solid black;
     border-color: #efecee;
     border-collapse: collapse;
+    background-color: transparent;
 }
 
-table {
-    background-color: transparent;
+#task-table {
     margin-left: auto;
     margin-right: auto;
     width: 90%;
@@ -59,29 +70,23 @@ table {
 }
 
 th {
-    font-family: 'Courier New', Courier, monospace;
+    height: 2rem;
+    padding: 10px 20px;
 }
 
-th, td {
-    padding: 5px 10px;
-}
 
 td {
-    max-width: 20ch;
+    padding: 5px 10px;
+    max-width: 20ch; 
     word-wrap: break-word;
     white-space: pre-wrap;
 }
-
-
 
 #wrapper {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
-
-
-
 
 #new-task-form-container {
     /* background-image: url("images/watercolor.png");
@@ -92,23 +97,16 @@ td {
     left: 0;
     width: 100%;
     background-color: rgb(231, 251, 229);
-    padding: 30px;
+    padding: 2rem;
 }
 
-body {
-    
-    font-family: 'Courier New', Courier, monospace;
-    text-align: center;
+#task-table>tr>:nth-child(1), #task-table>tr>:nth-child(2){ 
+    /* your css here */
+    min-width: max-content;
 }
 
 .left-align {
     text-align: left;
-}
-
-.edit-div {
-    border: 1px solid red;
-    display: flex;
-    justify-content: space-between;
 }
 
 input[type=submit] {
@@ -155,6 +153,11 @@ tr:hover {
     color: cornflowerblue;
 }
 
+#header-row:hover {
+    background-color: #f9ccdc25;
+    color: black;
+}
+
 .delete-button {
     height: 1rem;
     padding: 0.5rem;
@@ -196,6 +199,7 @@ textarea {
   .grow-wrap > textarea {
     /* You could leave this, but after a user resizes, then it ruins the auto sizing */
     resize: none;
+}
   
     /* Firefox shows scrollbar on growth, you can hide like this. */
     /* overflow: hidden; */
